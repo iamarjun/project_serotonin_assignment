@@ -157,7 +157,7 @@ data class DashboardDto(
                     @SerializedName("foundation") val foundation: Boolean?,
                     @SerializedName("id") val id: String?,
                     @SerializedName("image") val image: String?,
-                    @SerializedName("lastSyncedAt") val lastSyncedAt: Any?,
+                    @SerializedName("lastSyncedAt") val lastSyncedAt: String?,
                     @SerializedName("level") val level: Int?,
                     @SerializedName("name") val name: String?,
                     @SerializedName("productId") val productId: String?,
