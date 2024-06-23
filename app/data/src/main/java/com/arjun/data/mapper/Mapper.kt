@@ -1,6 +1,7 @@
 package com.arjun.data.mapper
 
 import com.arjun.data.remote.dto.DashboardDto
+import com.arjun.data.remote.dto.RegimeDto
 import com.arjun.domain.model.Dashboard
 import com.arjun.domain.model.Product
 
@@ -30,4 +31,24 @@ fun DashboardDto.Data.Today.UserAddedSupplement.toProduct() = Product(
     lastSyncedAt = "",
     consumed = consumed ?: false,
     brand = product?.brand ?: "",
+)
+
+fun RegimeDto.toRegime() = com.arjun.domain.model.Regime(
+    items = data?.itemsToConsume?.mapNotNull { it?.toItemsToConsume() } ?: emptyList()
+)
+
+fun RegimeDto.Data.ItemsToConsume.toItemsToConsume() = com.arjun.domain.model.ItemsToConsume(
+    title = title ?: "",
+    products = items?.mapNotNull { it?.product?.toProduct() } ?: emptyList(),
+)
+
+fun RegimeDto.Data.ItemsToConsume.Item.Product.toProduct() = Product(
+    id = id ?: "",
+    productId = productId ?: "",
+    name = name ?: "",
+    status = status ?: "",
+    image = image ?: "",
+    lastSyncedAt = lastSyncedAt ?: "",
+    consumed = consumed ?: false,
+    brand = brand ?: "",
 )

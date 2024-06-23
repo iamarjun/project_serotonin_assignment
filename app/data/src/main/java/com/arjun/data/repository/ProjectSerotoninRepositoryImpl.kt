@@ -2,8 +2,10 @@ package com.arjun.data.repository
 
 import android.content.Context
 import com.arjun.data.mapper.toDashboard
+import com.arjun.data.mapper.toRegime
 import com.arjun.data.remote.api.RestApi
 import com.arjun.data.remote.dto.DashboardDto
+import com.arjun.data.remote.dto.RegimeDto
 import com.arjun.domain.model.Dashboard
 import com.arjun.domain.model.Regime
 import com.arjun.domain.repository.ProjectSerotoninRepository
@@ -28,12 +30,12 @@ class ProjectSerotoninRepositoryImpl @Inject constructor(
 
     override suspend fun getRegime(): Regime {
         // val response = restApi.getRegime()
-        val json = context.assets.open("regime.json").bufferedReader().use {
+        val json = context.assets.open("regimen.json").bufferedReader().use {
             it.readText()
         }
 
-        val regime = Gson().fromJson(json, Regime::class.java)
+        val regime = Gson().fromJson(json, RegimeDto::class.java)
 
-        return regime
+        return regime.toRegime()
     }
 }

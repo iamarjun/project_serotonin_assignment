@@ -3,6 +3,7 @@ package com.arjun.presentation.dashboard
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -20,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,6 +32,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.arjun.domain.model.Product
 import com.arjun.presentation.R
@@ -37,8 +40,9 @@ import com.arjun.presentation.R
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DashboardUi(
-    state: State,
-    modifier: Modifier = Modifier
+    viewModel: DashboardDtoViewModel,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
 ) {
 
     //hex for dark purple
@@ -49,6 +53,8 @@ fun DashboardUi(
     //0xFF1A237E
     //darker
     //0xFF0D47A1
+
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     Column(
         modifier = modifier
@@ -64,14 +70,18 @@ fun DashboardUi(
             state = pagerState
         ) { page ->
             // Our page content
-            SupplementStack(page, if (page == 0) state.supplements else state.userAddedSupplement)
+            SupplementStack(
+                page = page,
+                products = if (page == 0) state.supplements else state.userAddedSupplement,
+                onClick = onClick
+            )
         }
     }
 
 }
 
 @Composable
-private fun SupplementStack(page: Int, products: List<Product>) {
+private fun SupplementStack(page: Int, products: List<Product>, onClick: () -> Unit) {
     Card(
         Modifier
             .fillMaxWidth()
@@ -94,7 +104,8 @@ private fun SupplementStack(page: Int, products: List<Product>) {
                         lastSyncedAt = "2021-02-08",
                         consumed = false,
                         brand = "Dettol"
-                    )
+                    ),
+                onClick = onClick
             )
             if (page == 0) {
                 UpcomingSupplement(listOf(products.random()))
@@ -106,7 +117,11 @@ private fun SupplementStack(page: Int, products: List<Product>) {
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun CurrentSupplement(page: Int, products: List<Product>) {
+private fun CurrentSupplement(
+    page: Int,
+    products: List<Product>,
+    onClick: () -> Unit
+) {
     val itemWidth = LocalConfiguration.current.screenWidthDp / 8
     Column(
         Modifier
@@ -134,7 +149,8 @@ private fun CurrentSupplement(page: Int, products: List<Product>) {
                     .size(60.dp)
                     .background(Color(0xFF673AB7), shape = CircleShape)
                     .padding(10.dp)
-                    .align(Alignment.End),
+                    .align(Alignment.End)
+                    .clickable { onClick() },
                 painter = painterResource(id = R.drawable.clean_hands),
                 contentDescription = ""
             )
