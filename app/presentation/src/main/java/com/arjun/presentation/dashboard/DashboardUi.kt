@@ -67,14 +67,21 @@ fun DashboardUi(
             pageCount = { 2 }
         )
         HorizontalPager(
+            modifier = Modifier.fillMaxWidth(),
             state = pagerState
         ) { page ->
             // Our page content
-            SupplementStack(
-                page = page,
-                products = if (page == 0) state.supplements else state.userAddedSupplement,
-                onClick = onClick
-            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(500.dp)
+            ) {
+                SupplementStack(
+                    page = page,
+                    products = if (page == 0) state.supplements else state.userAddedSupplement,
+                    onClick = onClick
+                )
+            }
         }
     }
 
@@ -95,7 +102,7 @@ private fun SupplementStack(page: Int, products: List<Product>, onClick: () -> U
                 products = if (page == 0)
                     products
                 else
-                    products + products + products + Product(
+                    products + products + Product(
                         id = "1",
                         productId = "1",
                         name = "Clean Hands",
@@ -130,6 +137,10 @@ private fun CurrentSupplement(
             .padding(8.dp)
 
     ) {
+        if (page > 0) {
+            Text(text = "Additional Supplements")
+            Spacer(modifier = Modifier.height(16.dp))
+        }
         FlowRow(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(10.dp)

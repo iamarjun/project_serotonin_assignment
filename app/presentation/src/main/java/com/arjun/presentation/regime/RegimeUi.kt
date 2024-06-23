@@ -17,6 +17,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -50,7 +51,7 @@ fun RegimeUi(
             .verticalScroll(scrollState)
     ) {
         regimeUiState.regime?.items?.forEach { item ->
-            val color = Color(rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256), 25)
+            val color = Color(rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256), 15)
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -89,10 +90,17 @@ fun RegimeUi(
                                     .size(50.dp)
                                     .align(Alignment.BottomCenter)
                                     .clip(CircleShape)
-                                    .background(Color.White)
+                                    .background(Color.White),
+                                contentAlignment = Alignment.Center
                             ) {
+                                CircularProgressIndicator(
+                                    progress = { 0.74f },
+                                    color = Color.Green,
+                                    strokeWidth = 3.dp,
+                                )
                                 Image(
-                                    modifier = Modifier.fillMaxSize(),
+                                    modifier = Modifier
+                                        .size(35.dp),
                                     painter = painterResource(id = R.drawable.check),
                                     contentDescription = "",
                                     colorFilter = ColorFilter.tint(Color.Green)
