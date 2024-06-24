@@ -3,6 +3,7 @@ package com.arjun.data.mapper
 import com.arjun.data.remote.dto.DashboardDto
 import com.arjun.data.remote.dto.RegimeDto
 import com.arjun.domain.model.Dashboard
+import com.arjun.domain.model.ItemsToConsume
 import com.arjun.domain.model.Product
 
 
@@ -37,7 +38,8 @@ fun RegimeDto.toRegime() = com.arjun.domain.model.Regime(
     items = data?.itemsToConsume?.mapNotNull { it?.toItemsToConsume() } ?: emptyList()
 )
 
-fun RegimeDto.Data.ItemsToConsume.toItemsToConsume() = com.arjun.domain.model.ItemsToConsume(
+fun RegimeDto.Data.ItemsToConsume.toItemsToConsume() = ItemsToConsume(
+    code = code ?: "",
     title = title ?: "",
     products = items?.mapNotNull { it?.product?.toProduct() } ?: emptyList(),
 )

@@ -11,11 +11,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.arjun.presentation.dashboard.DashboardUi
 import com.arjun.presentation.regime.RegimeUi
+import com.arjun.presentation.regime.SupplementDetail
 import com.arjun.presentation.theme.ProjectSerotoninTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -48,6 +51,29 @@ class MainActivity : ComponentActivity() {
                             composable("regime") {
                                 // regime screen
                                 RegimeUi(
+                                    animatedVisibilityScope = this,
+                                    viewModel = hiltViewModel(),
+                                    modifier = Modifier.padding(innerPadding),
+                                    onItemClick = { code, productId ->
+                                        navController.navigate("supplement_detail?code=$code&product_id=$productId")
+                                    }
+                                )
+                            }
+
+                            composable(
+                                "supplement_detail?code={code}&product_id={product_id}",
+                                arguments = listOf(
+                                    navArgument("code") { type = NavType.StringType },
+                                    navArgument("product_id") { type = NavType.StringType }
+                                )
+                            ) {
+                                // supplement detail screen
+                                val code = it.arguments?.getString("code")
+                                val productId = it.arguments?.getString("product_id")
+                                SupplementDetail(
+                                    animatedVisibilityScope = this,
+                                    code = code,
+                                    productId = productId,
                                     viewModel = hiltViewModel(),
                                     modifier = Modifier.padding(innerPadding)
                                 )

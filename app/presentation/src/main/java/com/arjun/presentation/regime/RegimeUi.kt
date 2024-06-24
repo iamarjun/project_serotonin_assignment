@@ -1,7 +1,11 @@
 package com.arjun.presentation.regime
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,11 +39,13 @@ import coil.compose.AsyncImage
 import com.arjun.presentation.R
 import kotlin.random.Random
 
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalSharedTransitionApi::class)
 @Composable
-fun RegimeUi(
+fun SharedTransitionScope.RegimeUi(
+    animatedVisibilityScope: AnimatedVisibilityScope,
     viewModel: RegimeViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onItemClick: (String, String) -> Unit
 ) {
     val regimeUiState by viewModel.state.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
@@ -73,13 +79,19 @@ fun RegimeUi(
                                 .clip(RoundedCornerShape(50))
                                 .background(Color.White)
                                 .padding(10.dp)
+                                .clickable { onItemClick(item.code, product.productId) }
                         ) {
                             AsyncImage(
                                 modifier = Modifier
                                     .height(150.dp)
                                     .width(50.dp)
+                                    .sharedElement(
+                                        state = rememberSharedContentState(key = product.productId),
+                                        animatedVisibilityScope = animatedVisibilityScope
+                                    )
                                     .align(Alignment.Center)
-                                    .padding(vertical = 15.dp),
+                                    .padding(vertical = 15.dp)
+                                    ,
                                 contentScale = ContentScale.Crop,
                                 model = product.image,
                                 contentDescription = product.productId
