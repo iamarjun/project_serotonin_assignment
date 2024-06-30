@@ -2,12 +2,10 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.hilt.android.gradle.plugin)
-    kotlin("kapt")
 }
 
 android {
-    namespace = "com.arjun.presentation"
+    namespace = "com.arjun.common_ui"
     compileSdk = 34
 
     defaultConfig {
@@ -46,13 +44,6 @@ android {
 
 dependencies {
 
-    implementation(project(":app:domain"))
-    implementation(project(":app:common-ui"))
-
-    implementation(libs.hilt.core)
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -65,30 +56,4 @@ dependencies {
     implementation(libs.androidx.runtime)
     implementation(libs.androidx.lifecycle.runtime.compose)
 
-    implementation(libs.androidx.compose.animation)
-    implementation(libs.androidx.navigation.compose)
-    implementation(libs.androidx.hilt.navigation.compose)
-
-    implementation(libs.androidx.lifecycle.viewmodel)
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.lifecycle.livedata.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.lifecycle.extensions)
-    implementation(libs.androidx.lifecycle.process)
-
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-
-    implementation(libs.sdp.android)
-    implementation(libs.ssp.android)
-
-    implementation(libs.coil)
-    implementation(libs.coil.svg)
-    implementation(libs.coil.compose)
-
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 }
